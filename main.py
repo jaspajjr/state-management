@@ -6,14 +6,12 @@ async def do_thing(state, key, url):
     print(state)
 
 
-async def main(state, key, urls):
+async def main(args):
         '''
         Creates a group of coroutines and waits for them to finish.
         '''
-        coroutines = [do_thing(state, key, url) for url in urls]
+        coroutines = [do_thing(state, key, url) for (state, key, url) in args]
         completed, pending = await asyncio.wait(coroutines)
-        for item in completed:
-            print(item.result())
 
 
 if __name__ == '__main__':
@@ -24,9 +22,13 @@ if __name__ == '__main__':
             "http://www.irs.gov/pub/irs-pdf/f1040sb.pdf"]
 
     state = {}
-    key = 'hello'
+    args = [(state, 'hello', 1),
+            (state, 'world', 2),
+            (state, 'foo', 3),
+            (state, 'bar', 4)]
+
     event_loop = asyncio.get_event_loop()
     try:
-        event_loop.run_until_complete(main(state, key, urls))
+        event_loop.run_until_complete(main(args))
     finally:
         event_loop.close()
