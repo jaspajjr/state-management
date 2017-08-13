@@ -1,25 +1,28 @@
 import asyncio
 
 
-async def add_item(state, key, value):
-    '''
-    Add key, value to the state dictionary
-    '''
-    def do_thing():
-        state[key] = value
-    await do_thing()
+async def do_thing(state, key, url):
+    state[key] = url
     print(state)
+
+
+async def main(args):
+        '''
+        Creates a group of coroutines and waits for them to finish.
+        '''
+        coroutines = [do_thing(state, key, url) for (state, key, url) in args]
+        completed, pending = await asyncio.wait(coroutines)
 
 
 if __name__ == '__main__':
     state = {}
-    key_list = ['word'.join('_{}'.format(x)) for x in range(10)]
-    value_list = [x for x in range(10)]
-    tasks = [add_item(state, 1, 2)]
+    args = [(state, 'hello', 1),
+            (state, 'world', 2),
+            (state, 'foo', 3),
+            (state, 'bar', 4)]
 
     event_loop = asyncio.get_event_loop()
     try:
-        event_loop.run_until_complete(
-                asyncio.async(add_item(state, 'hello', 2)))
+        event_loop.run_until_complete(main(args))
     finally:
         event_loop.close()
