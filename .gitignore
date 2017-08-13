@@ -1,4 +1,5 @@
 *.pyc
+state_management
 *.swp
 *.swo
 __cache__
