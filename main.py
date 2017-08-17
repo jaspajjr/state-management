@@ -1,15 +1,13 @@
 import asyncio
-from reducers import do_thing, get_command
-from functools import partial
+from reducers import get_prices, get_command
 
 
-# async def main(args):
-#         '''
-#         Creates a group of coroutines and waits for them to finish.
-#         '''
-#         coroutines = [partial_do_thing(key, url) for (key, url) in [
-#             ('hello', 'world'), ('foo', 'bar')]]
-#         completed, pending = await asyncio.wait(coroutines)
+async def update_prices(state):
+        '''
+        Updates the state with new prices.
+        '''
+        coroutines = [get_prices(state)]
+        completed, pending = await asyncio.wait(coroutines)
 
 
 async def update_command(state):
@@ -24,10 +22,6 @@ if __name__ == '__main__':
     state = {
         'command': 'hold'
             }
-    args = [(state, 'hello', 1),
-            (state, 'world', 2),
-            (state, 'foo', 3),
-            (state, 'bar', 4)]
 
     # partial_do_thing = partial(do_thing, state)
     event_loop = asyncio.get_event_loop()
