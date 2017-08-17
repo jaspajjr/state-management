@@ -23,12 +23,11 @@ if __name__ == '__main__':
         'command': 'hold'
             }
 
-    # partial_do_thing = partial(do_thing, state)
     event_loop = asyncio.get_event_loop()
     event_loop.set_debug(True)
     try:
-        # event_loop.run_until_complete(main(args))
         event_loop.run_until_complete(update_command(state))
+        event_loop.run_until_complete(update_prices(state))
     finally:
         event_loop.close()
     print(state)
