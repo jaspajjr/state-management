@@ -9,3 +9,9 @@ async def get_command(state):
 async def get_prices(state):
     prices = get_prices_gdax()
     state['prices'] = prices
+
+
+async def update_after_buy(state, order):
+    state['cash'] -= order['price']
+    state['btc'] += order['size']
+    print(order, state['cash'], state['btc'])
